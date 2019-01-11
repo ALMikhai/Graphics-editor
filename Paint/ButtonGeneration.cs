@@ -116,7 +116,7 @@ namespace Paint2.Paint
 
             foreach(Figure figure in TreeTop.Figures)
             {
-                if(figure.Select == true & (figure.Type == "Line" || figure.Type == "Polyline"))
+                if(figure.Select == true & (figure.Type == "Line" || figure.Type == "Pencil"))
                 {
                     HaveLineorPolyline = true;
                 }
@@ -170,29 +170,62 @@ namespace Paint2.Paint
             Instance.PropToolBarPanel.Children.Add(HandForSelectedFigure);
 
             bool HaveOnlyEllipse = true;
+            double RoundX = 0;
+            double RoundY = 0;
+            foreach (Figure figure in TreeTop.Figures)
+            {
+                if(figure.Type == "RoundRect" & figure.Select == true)
+                {
+                    RoundX = figure.RoundX;
+                    RoundY = figure.RoundY;
+                    break;
+                }
+            }
 
             foreach (Figure figure in TreeTop.Figures)
             {
-                if (figure.Type != "Ellipse" & figure.Select)
+                if ((figure.Type != "RoundRect" & figure.Select) || ((figure.RoundX != RoundX || figure.RoundY != RoundY) & figure.Select == true))
                 {
                     HaveOnlyEllipse = false;
+                    break;
                 }
             }
+
             if (HaveOnlyEllipse)
             {
-
-                TextBox RoundY = new TextBox();
-                RoundY.Text = "10.0";
-                RoundY.Width = 60;
-                RoundY.Height = 23;
-                //RoundY.TextChanged += new TextChangedEventHandler(Instance.changeRoundXY);
-                Instance.PropToolBarPanel.Children.Add(RoundY);
+                Label ChengeRoundX = new Label();
+                ChengeRoundX.Content = "ChangeRoundX";
+                Instance.PropToolBarPanel.Children.Add(ChengeRoundX);
+                Slider sldRoundX = new Slider();
+                sldRoundX.Maximum = 40;
+                sldRoundX.Minimum = 5;
+                sldRoundX.Height = 26;
+                sldRoundX.Width = 79;
+                sldRoundX.Value = RoundX;
+                sldRoundX.ValueChanged += new RoutedPropertyChangedEventHandler<double>(Instance.changeRoundX);
+                sldRoundX.PreviewMouseUp += new MouseButtonEventHandler(Instance.SldMouseUp);
+                Instance.PropToolBarPanel.Children.Add(sldRoundX);
+                Label ChengeRoundY = new Label();
+                ChengeRoundY.Content = "ChangeRoundY";
+                Instance.PropToolBarPanel.Children.Add(ChengeRoundY);
+                Slider sldRoundY = new Slider();
+                sldRoundY.Maximum = 40;
+                sldRoundY.Minimum = 5;
+                sldRoundY.Height = 26;
+                sldRoundY.Width = 79;
+                sldRoundY.Value = RoundY;
+                sldRoundY.ValueChanged += new RoutedPropertyChangedEventHandler<double>(Instance.changeRoundY);
+                sldRoundY.PreviewMouseUp += new MouseButtonEventHandler(Instance.SldMouseUp);
+                Instance.PropToolBarPanel.Children.Add(sldRoundY);
             }
             HaveOnlyEllipse = true;
         }
 
         public static void RowThicknessButton(double i)
         {
+            Label ChengeRoundX = new Label();
+            ChengeRoundX.Content = "ChangeRowThikness";
+            Instance.PropToolBarPanel.Children.Add(ChengeRoundX);
             Slider sld = new Slider();
             sld.Height = 26;
             sld.Width = 79;
@@ -200,7 +233,7 @@ namespace Paint2.Paint
             sld.Maximum = 20;
             sld.Value = i;
             sld.ValueChanged += new RoutedPropertyChangedEventHandler<double>(Instance.RowThicnessChange);
-            sld.PreviewMouseUp += new MouseButtonEventHandler (Instance.RowThicknessSldMouseUp);
+            sld.PreviewMouseUp += new MouseButtonEventHandler (Instance.SldMouseUp);
             Instance.PropToolBarPanel.Children.Add(sld);
         }
     }

@@ -10,6 +10,7 @@ using System.Runtime.Serialization;
 namespace Paint2.Paint
 {
     [Serializable]
+
     class Rectangle : Figure
     {
         public Rectangle() { }
@@ -27,6 +28,7 @@ namespace Paint2.Paint
             Pen = new Pen(Color, PenThikness) { DashStyle = Dash };
             Select = false;
             SelectRect = null;
+            Type = "Rectangle";
         }
 
         public override void Draw(DrawingContext drawingContext)
@@ -76,7 +78,7 @@ namespace Paint2.Paint
             ColorString = str;
         }
 
-        public override void ChangeBrush(Brush color, string str)
+        public override void ChangePen(Brush color, string str, bool check)
         {
             BrushColor = color;
             BrushColorString = str;
@@ -102,6 +104,7 @@ namespace Paint2.Paint
             info.AddValue("Color", ColorString);
             info.AddValue("BrushColor", BrushColorString);
             info.AddValue("Dash", DashString);
+            info.AddValue("Type", Type);
         }
 
         public Rectangle(SerializationInfo info, StreamingContext context)
@@ -111,6 +114,7 @@ namespace Paint2.Paint
             ColorString = (string)info.GetValue("Color", typeof(string));
             BrushColorString = (string)info.GetValue("BrushColor", typeof(string));
             DashString = (string)info.GetValue("Dash", typeof(string));
+            Type = (string)info.GetValue("Type", typeof(string));
             Color = TreeTop.TransformColor[ColorString];
             BrushColor = TreeTop.TransformColor[BrushColorString];
             Dash = TreeTop.TransformDashProp[DashString];

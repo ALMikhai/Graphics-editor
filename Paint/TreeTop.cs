@@ -85,17 +85,6 @@ namespace Paint2.Paint
             }
         }
 
-        public static void foreachSelectedFigure(object obj)
-        {
-            foreach(Figure figure in Figures)
-            {
-                if (figure.Select == true)
-                {
-
-                }
-            }
-        }
-
         public static Brush BrushNow = null;
         public static string BrushStringNow = "null";
         public static Brush ColorNow = Brushes.Black;

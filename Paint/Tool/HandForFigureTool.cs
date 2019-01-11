@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Paint2.Paint;
 
 namespace Paint2.Paint
 {
@@ -47,11 +48,6 @@ namespace Paint2.Paint
                 TreeTop.Figures.Add(figure.Clone());
             }
             StartPoint = LastPoint;
-        }
-
-        public override void MouseUp(Point point)
-        {
-            TreeTop.AddCondition();
         }
     }
 }

@@ -5,9 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Runtime.Serialization;
 
 namespace Paint2.Paint
 {
+    [Serializable]
+
     class Pencil : Figure
     {
         public Pencil() { }
@@ -16,12 +19,14 @@ namespace Paint2.Paint
         {
             Coordinates = new List<Point> { point, point };
             Color = TreeTop.ColorNow;
+            ColorString = TreeTop.ColorStringNow;
             PenThikness = TreeTop.ThicnessNow;
             Dash = TreeTop.DashNow;
+            DashString = TreeTop.DashStringhNow;
             Pen = new Pen(Color, PenThikness) { DashStyle = Dash };
             Select = false;
             SelectRect = null;
-            Type = "Polyline";
+            Type = "Pencil";
         }
 
         public override void Draw(DrawingContext drawingContext)
@@ -86,12 +91,14 @@ namespace Paint2.Paint
         {
             Pen = new Pen(color, PenThikness) { DashStyle = Dash };
             Color = color;
+            ColorString = str;
         }
 
         public override void ChangePen(DashStyle dash, string str)
         {
             Pen = new Pen(Color, PenThikness) { DashStyle = dash };
             Dash = dash;
+            DashString = str;
         }
 
         public override void ChangePen(double thikness)
@@ -99,6 +106,28 @@ namespace Paint2.Paint
             Pen = new Pen(Color, thikness) { DashStyle = Dash };
             PenThikness = thikness;
         }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("Coordinates", Coordinates);
+            info.AddValue("PenThikness", PenThikness);
+            info.AddValue("Color", ColorString);
+            info.AddValue("Dash", DashString);
+            info.AddValue("Type", Type);
+        }
+
+        public Pencil(SerializationInfo info, StreamingContext context)
+        {
+            Coordinates = (List<Point>)info.GetValue("Coordinates", typeof(List<Point>));
+            PenThikness = (double)info.GetValue("PenThikness", typeof(double));
+            ColorString = (string)info.GetValue("Color", typeof(string));
+            DashString = (string)info.GetValue("Dash", typeof(string));
+            Type = (string)info.GetValue("Type", typeof(string));
+            Color = TreeTop.TransformColor[ColorString];
+            Dash = TreeTop.TransformDashProp[DashString];
+            Pen = new Pen(Color, PenThikness) { DashStyle = Dash };
+        }
+
         public override Figure Clone()
         {
             return new Pencil

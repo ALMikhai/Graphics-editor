@@ -40,7 +40,7 @@ namespace Paint2
             Paint.TreeTop.FigureHost.Children.Clear();
             var drawingVisual = new DrawingVisual();
             var drawingContext = drawingVisual.RenderOpen();
-            foreach (var figure in Paint.TreeTop.Figures)
+            foreach (var figure in TreeTop.Figures)
             {
                 figure.Draw(drawingContext);
                 if(figure.SelectRect != null)
@@ -79,7 +79,7 @@ namespace Paint2
             {
                 TreeTop.ToolNow.MouseUp(e.GetPosition(MyCanvas));
 
-                if (TreeTop.ToolNow != TreeTop.Transform["Allotment"] & TreeTop.ToolNow != TreeTop.Transform["ZoomRect"] & TreeTop.ToolNow != TreeTop.Transform["Hand"] & TreeTop.ToolNow != TreeTop.HandTool)
+                if (TreeTop.ToolNow != TreeTop.Transform["Allotment"] & TreeTop.ToolNow != TreeTop.Transform["ZoomRect"] & TreeTop.ToolNow != TreeTop.Transform["Hand"])
                 {
                     TreeTop.AddCondition();
                     gotoPastCondition.IsEnabled = true;
@@ -155,52 +155,9 @@ namespace Paint2
             }
         }
 
-        public void ChangeStrokeColor(object sender, RoutedEventArgs e)
-        {
-            foreach(Figure figure in TreeTop.Figures)
-            {
-                if (figure.Select == true)
-                {
-                    figure.ChangePen(TreeTop.TransformColor[(sender as System.Windows.Controls.Button).Tag.ToString()], (sender as System.Windows.Controls.Button).Tag.ToString());
-                }
-            }
-            TreeTop.AddCondition();
-            Invalidate();
-        }
-
-        public void ChangeBrushColor(object sender, RoutedEventArgs e)
-        {
-            foreach (Figure figure in TreeTop.Figures)
-            {
-                if (figure.Select == true)
-                {
-                    figure.ChangeBrush(TreeTop.TransformColor[(sender as System.Windows.Controls.Button).Tag.ToString()], (sender as System.Windows.Controls.Button).Tag.ToString());
-                }
-            }
-            TreeTop.AddCondition();
-            Invalidate();
-        }
-
         private void ThiknessSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             TreeTop.ThicnessNow = ThiknessSlider.Value;
-        }
-
-        public void RowThicnessChange(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            foreach (Figure figure in TreeTop.Figures)
-            {
-                if (figure.Select == true)
-                {
-                    figure.ChangePen(e.NewValue);
-                }
-            }
-            Invalidate();
-        }
-
-        public void RowThicknessSldMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            TreeTop.AddCondition();
         }
 
         private void FirstColor(object sender, RoutedEventArgs e)
@@ -247,48 +204,6 @@ namespace Paint2
             MyCanvas.LayoutTransform = new ScaleTransform(1, 1);
             ScrollViewerCanvas.ScrollToVerticalOffset(0);
             ScrollViewerCanvas.ScrollToHorizontalOffset(0);
-        }
-
-        bool PressHand = false;
-
-        public void HandForSelectedFigure(object sender, RoutedEventArgs e)
-        {
-            if (PressHand == false)
-            {
-                TreeTop.ToolNow = TreeTop.HandTool;
-                PressHand = true;
-            }
-            else
-            {
-                TreeTop.ToolNow = TreeTop.Transform["Allotment"];
-                PressHand = false;
-            }
-        }
-
-        public void ClearSelectedFigure(object sender, RoutedEventArgs e)
-        {
-            foreach (Figure figure in TreeTop.Figures.ToArray())
-            {
-                if(figure.Select == true)
-                {
-                    TreeTop.Figures.Remove(figure);
-                }
-            }
-            TreeTop.AddCondition();
-            Invalidate();
-        }
-
-        public void ChangeDash(object sender, RoutedEventArgs e)
-        {
-            foreach (Figure figure in TreeTop.Figures)
-            {
-                if (figure.Select == true)
-                {
-                    figure.ChangePen(TreeTop.TransformDashProp[(sender as System.Windows.Controls.Button).Content.ToString()], (sender as System.Windows.Controls.Button).Content.ToString());
-                }
-            }
-            TreeTop.AddCondition();
-            Invalidate();
         }
 
         private void ChangeSelectionDash(object sender, SelectionChangedEventArgs e)
@@ -372,6 +287,7 @@ namespace Paint2
                     }
                 }
             }
+            TreeTop.Figures.Clear();
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "Files(*.bin)|*.bin";
             ofd.Title = "Открыть";
@@ -387,6 +303,8 @@ namespace Paint2
             TreeTop.ConditionsCanvas.Clear();
             TreeTop.ConditionNumber = 0;
             TreeTop.AddCondition();
+            gotoPastCondition.IsEnabled = false;
+            gotoSecondCondition.IsEnabled = false;
         }
 
         private void gotoPastCondition_Click(object sender, RoutedEventArgs e)
@@ -411,9 +329,125 @@ namespace Paint2
             Invalidate();
         }
 
-        public void changeRoundX (object sender, TextChangedEventArgs e)
+        //Change property figure function
+
+        public void changeRoundX (object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            
+            foreach (Figure figure in TreeTop.Figures)
+            {
+                if (figure.Select == true)
+                {
+                    figure.ChangeRoundX(e.NewValue);
+                }
+            }
+            Invalidate();
+        }
+
+        public void changeRoundY(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            foreach (Figure figure in TreeTop.Figures)
+            {
+                if (figure.Select == true)
+                {
+                    figure.ChangeRoundY(e.NewValue);
+                }
+            }
+            Invalidate();
+        }
+
+        public void ChangeStrokeColor(object sender, RoutedEventArgs e)
+        {
+            foreach(Figure figure in TreeTop.Figures)
+            {
+                if (figure.Select == true)
+                {
+                    figure.ChangePen(TreeTop.TransformColor[(sender as System.Windows.Controls.Button).Tag.ToString()], (sender as System.Windows.Controls.Button).Tag.ToString());
+                }
+            }
+            TreeTop.AddCondition();
+            gotoPastCondition.IsEnabled = true;
+            gotoSecondCondition.IsEnabled = false;
+            Invalidate();
+        }
+
+        public void ChangeBrushColor(object sender, RoutedEventArgs e)
+        {
+            foreach (Figure figure in TreeTop.Figures)
+            {
+                if (figure.Select == true)
+                {
+                    figure.ChangePen(TreeTop.TransformColor[(sender as System.Windows.Controls.Button).Tag.ToString()], (sender as System.Windows.Controls.Button).Tag.ToString(), new bool());
+                }
+            }
+            TreeTop.AddCondition();
+            gotoPastCondition.IsEnabled = true;
+            gotoSecondCondition.IsEnabled = false;
+            Invalidate();
+        }
+
+        public void ChangeDash(object sender, RoutedEventArgs e)
+        {
+            foreach (Figure figure in TreeTop.Figures)
+            {
+                if (figure.Select == true)
+                {
+                    figure.ChangePen(TreeTop.TransformDashProp[(sender as System.Windows.Controls.Button).Content.ToString()], (sender as System.Windows.Controls.Button).Content.ToString());
+                }
+            }
+            TreeTop.AddCondition();
+            gotoPastCondition.IsEnabled = true;
+            gotoSecondCondition.IsEnabled = false;
+            Invalidate();
+        }
+
+        public void ClearSelectedFigure(object sender, RoutedEventArgs e)
+        {
+            foreach (Figure figure in TreeTop.Figures.ToArray())
+            {
+                if(figure.Select == true)
+                {
+                    TreeTop.Figures.Remove(figure);
+                }
+            }
+            TreeTop.AddCondition();
+            gotoPastCondition.IsEnabled = true;
+            gotoSecondCondition.IsEnabled = false;
+            Invalidate();
+        }
+
+        public void RowThicnessChange(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            foreach (Figure figure in TreeTop.Figures)
+            {
+                if (figure.Select == true)
+                {
+                    figure.ChangePen(e.NewValue);
+                }
+            }
+            Invalidate();
+        }
+
+        bool PressHand = false;
+
+        public void HandForSelectedFigure(object sender, RoutedEventArgs e)
+        {
+            if (PressHand == false)
+            {
+                TreeTop.ToolNow = TreeTop.HandTool;
+                PressHand = true;
+            }
+            else
+            {
+                TreeTop.ToolNow = TreeTop.Transform["Allotment"];
+                PressHand = false;
+            }
+        }
+
+        public void SldMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            TreeTop.AddCondition();
+            gotoPastCondition.IsEnabled = true;
+            gotoSecondCondition.IsEnabled = false;
         }
     }
 }

@@ -95,7 +95,17 @@ namespace Paint2
 
         }
 
-        public virtual void ChangeBrush(Brush color, string brushstring)
+        public virtual void ChangePen(Brush color, string brushstring, bool check)
+        {
+
+        }
+
+        public virtual void ChangeRoundX(double newRoundX)
+        {
+
+        }
+
+        public virtual void ChangeRoundY(double newRoundY)
         {
 
         }

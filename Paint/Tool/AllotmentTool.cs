@@ -31,7 +31,7 @@ namespace Paint2.Paint
             {
                 var p1Min = new Point(Math.Min(TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].X, TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].X), Math.Min(TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].Y, TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].Y));
                 var p2Max = new Point(Math.Max(TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].X, TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].X), Math.Max(TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].Y, TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].Y));
-                if (figure.Type == "Polyline")
+                if (figure.Type == "Pencil")
                 {
                     foreach (Point pnt in figure.Coordinates)
                     {
