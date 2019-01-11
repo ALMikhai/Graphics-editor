@@ -1,0 +1,65 @@
+﻿<Window x:Class="Paint2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Paint2"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="570.667" Width="1145.999" 
+        MinWidth="711">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70px"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="Aqua" Height="70" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="403px"></ColumnDefinition>
+                <ColumnDefinition Width="300px"></ColumnDefinition>
+                <ColumnDefinition Width="400px"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1">
+                <ComboBox x:Name="comboBoxDash" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" SelectionChanged="ChangeSelectionDash">
+                    <TextBlock Tag="Solid"  TextAlignment="Center" Width="110">―――――</TextBlock>
+                    <TextBlock Tag="Dash" TextAlignment="Center" Width="110">— — — — — —</TextBlock>
+                    <TextBlock Tag="Dash" TextAlignment="Center" Width="110">— ∙ — ∙ — ∙ — ∙ —</TextBlock>
+                    <TextBlock Tag="Dash" TextAlignment="Center" Width="110">— ∙ ∙ — ∙ ∙ — ∙ ∙ — </TextBlock>
+                    <TextBlock Tag="Dash" TextAlignment="Center" Width="110">∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙</TextBlock>
+                </ComboBox>
+                <TextBox x:Name="textBoxRoundRectX" HorizontalAlignment="Left" Height="23" Margin="146,10,0,0" TextWrapping="Wrap" Text="10" VerticalAlignment="Top" Width="57" IsEnabled="False" TextChanged="textBoxRoundRectX_TextChanged"/>
+                <TextBox x:Name="textBoxRoundRectY" HorizontalAlignment="Left" Height="23" Margin="234,10,0,0" TextWrapping="Wrap" Text="10" VerticalAlignment="Top" Width="57" IsEnabled="False" TextChanged="textBoxRoundRectY_TextChanged"/>
+                <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="92,38,0,0" VerticalAlignment="Top" Width="75" Click="SaveButton_Click"/>
+                <Button x:Name="LoadButton" Content="Load" HorizontalAlignment="Left" Margin="178,38,0,0" VerticalAlignment="Top" Width="75" Click="LoadButton_Click"/>
+                <Button x:Name="gotoPastCondition" Content="^" HorizontalAlignment="Left" Height="19" Margin="4,37,0,0" VerticalAlignment="Top" Width="24" Click="gotoPastCondition_Click" IsEnabled="False"/>
+                <Button x:Name="gotoSecondCondition" Content="->" HorizontalAlignment="Left" Height="19" Margin="33,37,0,0" VerticalAlignment="Top" Width="24" Click="gotoSecondCondition_Click" IsEnabled="False"/>
+            </Grid>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <ToolBarPanel Name="colorbarPanel" Grid.Row="0" Height="35px" Orientation="Horizontal" Margin="24,0,0,0"/>
+                <Button x:Name="button_secondColor" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="50" Height="30" Click="SecondColor" BorderBrush="White" Margin="155,5,95,0"/>
+                <Button x:Name="button_firstColor" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="50" Height="30" Click="FirstColor"  Background="Black" BorderBrush="White" Margin="95,5,155,0"/>
+                <Slider x:Name="ThiknessSlider" HorizontalAlignment="Left" Margin="282,9,0,0" VerticalAlignment="Top" Height="26" Width="79" Grid.Row="1" Minimum="1" Value="4" ValueChanged="ThiknessSlider_ValueChanged" Maximum="20"/>
+            </Grid>
+            <ToolBarPanel Grid.Column="0"  Name="toolbarPanel" Height="70" Orientation="Horizontal" Grid.RowSpan="2"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <ScrollViewer Name="ScrollViewerCanvas" Grid.Row="1" Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" CanContentScroll="False" >
+                <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left">
+                    <Canvas  x:Name="MyCanvas" Background="Bisque" MouseDown="MouseDown" MouseUp="MouseUp" MouseMove="MouseMove" ClipToBounds="True" Height="445" VerticalAlignment="Top" HorizontalAlignment="Left" Width="703" Loaded="MyCanvas_Loaded" SizeChanged="MyCanvas_SizeChanged" MouseLeave="MyCanvas_MouseLeave">
+                        <Canvas.LayoutTransform>
+                            <ScaleTransform x:Name="layout"/>
+                        </Canvas.LayoutTransform>
+                    </Canvas>
+                </StackPanel>
+            </ScrollViewer>
+            <ToolBarPanel Name="PropToolBarPanel" HorizontalAlignment="Left" Width="100"/>
+        </Grid>
+    </Grid>
+</Window>
