@@ -155,7 +155,6 @@ namespace Paint2.Paint
             { "Purple", Brushes.Purple },
             { "Coral", Brushes.Coral },
             { "White", Brushes.White },
-            { "null", null },
         };
     }
 }

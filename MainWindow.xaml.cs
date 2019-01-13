@@ -53,14 +53,14 @@ namespace Paint2
             Paint.TreeTop.FigureHost.Children.Add(drawingVisual);
         }
 
-        private void MouseDown(object sender, MouseButtonEventArgs e)
+        private void MyCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
             TreeTop.ToolNow.MouseDown(e.GetPosition(MyCanvas));
             ClikOnCanvas = true;
             Invalidate();
         }
 
-        private void MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        private void MyCanvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if (ClikOnCanvas)
             {
@@ -73,7 +73,7 @@ namespace Paint2
                 Invalidate();
             }   
         }
-        private void MouseUp(object sender, MouseButtonEventArgs e)
+        private void MyCanvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (ClikOnCanvas)
             {
@@ -90,6 +90,10 @@ namespace Paint2
                     MyCanvas.LayoutTransform = new ScaleTransform(TreeTop.ScaleRateX, TreeTop.ScaleRateY);
                     ScrollViewerCanvas.ScrollToVerticalOffset(TreeTop.DistanceToPointY * TreeTop.ScaleRateY);
                     ScrollViewerCanvas.ScrollToHorizontalOffset(TreeTop.DistanceToPointX * TreeTop.ScaleRateX);
+                }
+                if (TreeTop.ToolNow == TreeTop.HandTool)
+                {
+                    TreeTop.ToolNow = TreeTop.Transform["Allotment"];
                 }
                 ClikOnCanvas = false;
                 Invalidate();
@@ -409,6 +413,7 @@ namespace Paint2
                     TreeTop.Figures.Remove(figure);
                 }
             }
+            PropToolBarPanel.Children.Clear();
             TreeTop.AddCondition();
             gotoPastCondition.IsEnabled = true;
             gotoSecondCondition.IsEnabled = false;
@@ -427,20 +432,9 @@ namespace Paint2
             Invalidate();
         }
 
-        bool PressHand = false;
-
         public void HandForSelectedFigure(object sender, RoutedEventArgs e)
         {
-            if (PressHand == false)
-            {
-                TreeTop.ToolNow = TreeTop.HandTool;
-                PressHand = true;
-            }
-            else
-            {
-                TreeTop.ToolNow = TreeTop.Transform["Allotment"];
-                PressHand = false;
-            }
+            TreeTop.ToolNow = TreeTop.HandTool;
         }
 
         public void SldMouseUp(object sender, MouseButtonEventArgs e)
