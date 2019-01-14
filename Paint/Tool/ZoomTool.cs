@@ -23,51 +23,61 @@ namespace Paint2.Paint
 
         public override void MouseUp(Point point)
         {
-            if (TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].X > TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].X)
+            if (Point.Subtract(TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0], TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1]).Length > 50)
             {
-                TreeTop.ScaleRateX = TreeTop.CanvasWidth / (TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].X - TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].X);
-            }
-            else
-            {
-                TreeTop.ScaleRateX = TreeTop.CanvasWidth / (TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].X - TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].X);
-            }
+                if (TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].X > TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].X)
+                {
+                    TreeTop.ScaleRateX = TreeTop.CanvasWidth / (TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].X - TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].X);
+                }
+                else
+                {
+                    TreeTop.ScaleRateX = TreeTop.CanvasWidth / (TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].X - TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].X);
+                }
 
-            if (TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].Y > TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].Y)
-            {
-                TreeTop.ScaleRateY = TreeTop.CanvasHeigth / (TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].Y - TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].Y);
-            }
-            else
-            {
-                TreeTop.ScaleRateY = TreeTop.CanvasHeigth / (TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].Y - TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].Y);
-            }
+                if (TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].Y > TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].Y)
+                {
+                    TreeTop.ScaleRateY = TreeTop.CanvasHeigth / (TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].Y - TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].Y);
+                }
+                else
+                {
+                    TreeTop.ScaleRateY = TreeTop.CanvasHeigth / (TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].Y - TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].Y);
+                }
 
-            if (TreeTop.ScaleRateX > TreeTop.ScaleRateY)
-            {
-                TreeTop.ScaleRateY = TreeTop.ScaleRateX;
-            }
-            else
-            {
-                TreeTop.ScaleRateX = TreeTop.ScaleRateY;
-            }
+                if (TreeTop.ScaleRateX > TreeTop.ScaleRateY)
+                {
+                    TreeTop.ScaleRateY = TreeTop.ScaleRateX;
+                }
+                else
+                {
+                    TreeTop.ScaleRateX = TreeTop.ScaleRateY;
+                }
 
-            if (TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].X > TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].X)
-            {
-                TreeTop.DistanceToPointX = TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].X;
-            }
-            else
-            {
-                TreeTop.DistanceToPointX = TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].X;
-            }
+                if (TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].X > TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].X)
+                {
+                    TreeTop.DistanceToPointX = TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].X;
+                }
+                else
+                {
+                    TreeTop.DistanceToPointX = TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].X;
+                }
 
-            if (TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].Y > TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].Y)
-            {
-                TreeTop.DistanceToPointY = TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].Y;
+                if (TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].Y > TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].Y)
+                {
+                    TreeTop.DistanceToPointY = TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].Y;
+                }
+                else
+                {
+                    TreeTop.DistanceToPointY = TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].Y;
+                }
             }
             else
             {
-                TreeTop.DistanceToPointY = TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].Y;
+                TreeTop.ScaleRateX = 1;
+                TreeTop.ScaleRateY = 1;
+                TreeTop.DistanceToPointX = 0;
+                TreeTop.DistanceToPointY = 0;
             }
-            TreeTop.Figures.Remove(TreeTop.Figures[TreeTop.Figures.Count-1]);
+            TreeTop.Figures.Remove(TreeTop.Figures[TreeTop.Figures.Count - 1]);
         }
     }
 }

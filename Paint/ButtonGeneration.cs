@@ -89,6 +89,10 @@ namespace Paint2.Paint
 
         public static void PropertyButtonGeneration()
         {
+            Label Changelinecolor = new Label();
+            Changelinecolor.Content = "Change line color";
+            Changelinecolor.HorizontalAlignment = HorizontalAlignment.Center;
+            Instance.PropToolBarPanel.Children.Add(Changelinecolor);
             ToolBar prop1 = new ToolBar();
             prop1.Name = "PropertiesToolBar1";
             prop1.Margin = new Thickness(2);
@@ -107,11 +111,7 @@ namespace Paint2.Paint
             }
 
             Instance.PropToolBarPanel.Children.Add(prop1);
-
-            ToolBar prop2 = new ToolBar();
-            prop2.Name = "PropertiesToolBar2";
-            prop2.Margin = new Thickness(2);
-
+            
             bool HaveLineorPolyline = false;
 
             foreach(Figure figure in TreeTop.Figures)
@@ -124,6 +124,13 @@ namespace Paint2.Paint
 
             if (HaveLineorPolyline == false)
             {
+                Label Changefillcolor = new Label();
+                Changefillcolor.Content = "Change fill color";
+                Changefillcolor.HorizontalAlignment = HorizontalAlignment.Center;
+                Instance.PropToolBarPanel.Children.Add(Changefillcolor);
+                ToolBar prop2 = new ToolBar();
+                prop2.Name = "PropertiesToolBar2";
+                prop2.Margin = new Thickness(2);
 
                 foreach (KeyValuePair<String, Brush> color in TreeTop.TransformColor)
                 {
@@ -141,7 +148,12 @@ namespace Paint2.Paint
             }
 
             HaveLineorPolyline = false;
-            
+
+            Label Changedash = new Label();
+            Changedash.Content = "Change dash";
+            Changedash.HorizontalAlignment = HorizontalAlignment.Center;
+            Instance.PropToolBarPanel.Children.Add(Changedash);
+
             foreach (KeyValuePair<String, DashStyle> dash in TreeTop.TransformDashProp)
             {
                 Button button = new Button();
@@ -153,6 +165,11 @@ namespace Paint2.Paint
                 Instance.PropToolBarPanel.Children.Add(button);
             }
 
+            Label Removethefigures = new Label();
+            Removethefigures.Content = "Remove the figures";
+            Removethefigures.HorizontalAlignment = HorizontalAlignment.Center;
+            Instance.PropToolBarPanel.Children.Add(Removethefigures);
+
             Button ClearSelectedFigure = new Button();
             ClearSelectedFigure.Height = 23;
             ClearSelectedFigure.Width = 60;
@@ -160,6 +177,11 @@ namespace Paint2.Paint
             ClearSelectedFigure.Click += new RoutedEventHandler(Instance.ClearSelectedFigure);
             ClearSelectedFigure.Margin = new Thickness(2);
             Instance.PropToolBarPanel.Children.Add(ClearSelectedFigure);
+
+            Label Movethefigures = new Label();
+            Movethefigures.Content = "Move the figures";
+            Movethefigures.HorizontalAlignment = HorizontalAlignment.Center;
+            Instance.PropToolBarPanel.Children.Add(Movethefigures);
 
             Button HandForSelectedFigure = new Button();
             HandForSelectedFigure.Height = 23;
@@ -194,7 +216,8 @@ namespace Paint2.Paint
             if (HaveOnlyEllipse)
             {
                 Label ChengeRoundX = new Label();
-                ChengeRoundX.Content = "ChangeRoundX";
+                ChengeRoundX.Content = "Change RoundX";
+                ChengeRoundX.HorizontalAlignment = HorizontalAlignment.Center;
                 Instance.PropToolBarPanel.Children.Add(ChengeRoundX);
                 Slider sldRoundX = new Slider();
                 sldRoundX.Maximum = 40;
@@ -206,7 +229,8 @@ namespace Paint2.Paint
                 sldRoundX.PreviewMouseUp += new MouseButtonEventHandler(Instance.SldMouseUp);
                 Instance.PropToolBarPanel.Children.Add(sldRoundX);
                 Label ChengeRoundY = new Label();
-                ChengeRoundY.Content = "ChangeRoundY";
+                ChengeRoundY.Content = "Change RoundY";
+                ChengeRoundY.HorizontalAlignment = HorizontalAlignment.Center;
                 Instance.PropToolBarPanel.Children.Add(ChengeRoundY);
                 Slider sldRoundY = new Slider();
                 sldRoundY.Maximum = 40;
@@ -223,9 +247,10 @@ namespace Paint2.Paint
 
         public static void RowThicknessButton(double i)
         {
-            Label ChengeRoundX = new Label();
-            ChengeRoundX.Content = "ChangeRowThikness";
-            Instance.PropToolBarPanel.Children.Add(ChengeRoundX);
+            Label ChangeRowThikness = new Label();
+            ChangeRowThikness.Content = "Change row thikness";
+            ChangeRowThikness.HorizontalAlignment = HorizontalAlignment.Center;
+            Instance.PropToolBarPanel.Children.Add(ChangeRowThikness);
             Slider sld = new Slider();
             sld.Height = 26;
             sld.Width = 79;

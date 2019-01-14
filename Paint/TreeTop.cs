@@ -87,8 +87,10 @@ namespace Paint2.Paint
 
         public static Brush BrushNow = null;
         public static string BrushStringNow = "null";
+        public static Brush tempBrush = null;
         public static Brush ColorNow = Brushes.Black;
         public static string ColorStringNow = "Black";
+        public static string tempStringBrush = "";
         public static double ThicnessNow = 4;
         public static DashStyle DashNow = DashStyles.Solid;
         public static string DashStringhNow = "―――――";
@@ -155,6 +157,7 @@ namespace Paint2.Paint
             { "Purple", Brushes.Purple },
             { "Coral", Brushes.Coral },
             { "White", Brushes.White },
+            { "null", null }
         };
     }
 }

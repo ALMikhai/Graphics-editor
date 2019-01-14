@@ -20,8 +20,8 @@ namespace Paint2.Paint
 
         public override void MouseMove(Point point)
         {
-            TreeTop.HandScrollX = TreeTop.HandScrollX + TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].X - TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].X;
-            TreeTop.HandScrollY = TreeTop.HandScrollY + TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].Y - TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].Y;
+            TreeTop.HandScrollX += TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].X - TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].X;
+            TreeTop.HandScrollY += TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[0].Y - TreeTop.Figures[TreeTop.Figures.Count - 1].Coordinates[1].Y;
             TreeTop.Figures[TreeTop.Figures.Count - 1].AddCord(point);
         }
 

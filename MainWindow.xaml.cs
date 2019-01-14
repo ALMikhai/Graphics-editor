@@ -55,7 +55,26 @@ namespace Paint2
 
         private void MyCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            TreeTop.ToolNow.MouseDown(e.GetPosition(MyCanvas));
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                TreeTop.ToolNow.MouseDown(e.GetPosition(MyCanvas));
+            }
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                TreeTop.tempBrush = TreeTop.BrushNow;
+                TreeTop.BrushNow = TreeTop.ColorNow;
+                TreeTop.ColorNow = TreeTop.tempBrush;
+                TreeTop.tempStringBrush = TreeTop.BrushStringNow;
+                TreeTop.BrushStringNow = TreeTop.ColorStringNow;
+                TreeTop.ColorStringNow = TreeTop.tempStringBrush;
+                TreeTop.ToolNow.MouseDown(e.GetPosition(MyCanvas));
+                TreeTop.tempBrush = TreeTop.BrushNow;
+                TreeTop.BrushNow = TreeTop.ColorNow;
+                TreeTop.ColorNow = TreeTop.tempBrush;
+                TreeTop.tempStringBrush = TreeTop.BrushStringNow;
+                TreeTop.BrushStringNow = TreeTop.ColorStringNow;
+                TreeTop.ColorStringNow = TreeTop.tempStringBrush;
+            }
             ClikOnCanvas = true;
             Invalidate();
         }
@@ -149,13 +168,16 @@ namespace Paint2
             if (TreeTop.FirstPress== true){
                 TreeTop.ColorNow = TreeTop.TransformColor[(sender as System.Windows.Controls.Button).Tag.ToString()];
                 TreeTop.ColorStringNow = (sender as System.Windows.Controls.Button).Tag.ToString();
-                button_firstColor.Background = (sender as System.Windows.Controls.Button).Background;
+                if((sender as System.Windows.Controls.Button).Background == null) { button_firstColor.Background = Brushes.Gray; }
+                else { button_firstColor.Background = (sender as System.Windows.Controls.Button).Background; }
+                
             }
             else
             {
                 TreeTop.BrushNow = TreeTop.TransformColor[(sender as System.Windows.Controls.Button).Tag.ToString()];
                 TreeTop.BrushStringNow = (sender as System.Windows.Controls.Button).Tag.ToString();
-                button_secondColor.Background = (sender as System.Windows.Controls.Button).Background;
+                if ((sender as System.Windows.Controls.Button).Background == null) { button_secondColor.Background = Brushes.Gray; }
+                else { button_secondColor.Background = (sender as System.Windows.Controls.Button).Background; }
             }
         }
 
@@ -443,5 +465,6 @@ namespace Paint2
             gotoPastCondition.IsEnabled = true;
             gotoSecondCondition.IsEnabled = false;
         }
+
     }
 }
