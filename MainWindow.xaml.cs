@@ -32,7 +32,7 @@ namespace Paint2
             Instance = this;
             MyCanvas.Children.Add(Paint.TreeTop.FigureHost);
             ButtonGeneration.Generation();
-            TreeTop.AddCondition();
+            TreeTop.AddState();
         }
 
         private void Invalidate()
@@ -43,9 +43,9 @@ namespace Paint2
             foreach (var figure in TreeTop.Figures)
             {
                 figure.Draw(drawingContext);
-                if(figure.SelectRect != null)
+                if(figure.SelectedRect != null)
                 {
-                    figure.SelectRect.Draw(drawingContext);
+                    figure.SelectedRect.Draw(drawingContext);
                 }
             }
 
@@ -64,16 +64,10 @@ namespace Paint2
                 TreeTop.tempBrush = TreeTop.BrushNow;
                 TreeTop.BrushNow = TreeTop.ColorNow;
                 TreeTop.ColorNow = TreeTop.tempBrush;
-                TreeTop.tempStringBrush = TreeTop.BrushStringNow;
-                TreeTop.BrushStringNow = TreeTop.ColorStringNow;
-                TreeTop.ColorStringNow = TreeTop.tempStringBrush;
                 TreeTop.ToolNow.MouseDown(e.GetPosition(MyCanvas));
                 TreeTop.tempBrush = TreeTop.BrushNow;
                 TreeTop.BrushNow = TreeTop.ColorNow;
                 TreeTop.ColorNow = TreeTop.tempBrush;
-                TreeTop.tempStringBrush = TreeTop.BrushStringNow;
-                TreeTop.BrushStringNow = TreeTop.ColorStringNow;
-                TreeTop.ColorStringNow = TreeTop.tempStringBrush;
             }
             ClikOnCanvas = true;
             Invalidate();
@@ -84,7 +78,7 @@ namespace Paint2
             if (ClikOnCanvas)
             {
                 TreeTop.ToolNow.MouseMove(e.GetPosition(MyCanvas));
-                if (TreeTop.ToolNow == TreeTop.Transform["Hand"])
+                if (TreeTop.ToolNow == TreeTop.TransformTools["Hand"])
                 {
                     ScrollViewerCanvas.ScrollToVerticalOffset(TreeTop.HandScrollY);
                     ScrollViewerCanvas.ScrollToHorizontalOffset(TreeTop.HandScrollX);
@@ -98,13 +92,13 @@ namespace Paint2
             {
                 TreeTop.ToolNow.MouseUp(e.GetPosition(MyCanvas));
 
-                if (TreeTop.ToolNow != TreeTop.Transform["Allotment"] & TreeTop.ToolNow != TreeTop.Transform["ZoomRect"] & TreeTop.ToolNow != TreeTop.Transform["Hand"])
+                if (TreeTop.ToolNow != TreeTop.TransformTools["Allotment"] & TreeTop.ToolNow != TreeTop.TransformTools["ZoomRect"] & TreeTop.ToolNow != TreeTop.TransformTools["Hand"])
                 {
-                    TreeTop.AddCondition();
+                    TreeTop.AddState();
                     gotoPastCondition.IsEnabled = true;
                     gotoSecondCondition.IsEnabled = false;
                 }
-                if (TreeTop.ToolNow == TreeTop.Transform["ZoomRect"])
+                if (TreeTop.ToolNow == TreeTop.TransformTools["ZoomRect"])
                 {
                     MyCanvas.LayoutTransform = new ScaleTransform(TreeTop.ScaleRateX, TreeTop.ScaleRateY);
                     ScrollViewerCanvas.ScrollToVerticalOffset(TreeTop.DistanceToPointY * TreeTop.ScaleRateY);
@@ -112,7 +106,7 @@ namespace Paint2
                 }
                 if (TreeTop.ToolNow == TreeTop.HandTool)
                 {
-                    TreeTop.ToolNow = TreeTop.Transform["Allotment"];
+                    TreeTop.ToolNow = TreeTop.TransformTools["Allotment"];
                 }
                 ClikOnCanvas = false;
                 Invalidate();
@@ -125,13 +119,13 @@ namespace Paint2
             {
                 TreeTop.ToolNow.MouseUp(e.GetPosition(MyCanvas));
 
-                if (TreeTop.ToolNow != TreeTop.Transform["Allotment"] & TreeTop.ToolNow != TreeTop.Transform["ZoomRect"] & TreeTop.ToolNow != TreeTop.Transform["Hand"] & TreeTop.ToolNow != TreeTop.HandTool)
+                if (TreeTop.ToolNow != TreeTop.TransformTools["Allotment"] & TreeTop.ToolNow != TreeTop.TransformTools["ZoomRect"] & TreeTop.ToolNow != TreeTop.TransformTools["Hand"] & TreeTop.ToolNow != TreeTop.HandTool)
                 {
-                    TreeTop.AddCondition();
+                    TreeTop.AddState();
                     gotoPastCondition.IsEnabled = true;
                     gotoSecondCondition.IsEnabled = false;
                 }
-                if (TreeTop.ToolNow == TreeTop.Transform["ZoomRect"])
+                if (TreeTop.ToolNow == TreeTop.TransformTools["ZoomRect"])
                 {
                     MyCanvas.LayoutTransform = new ScaleTransform(TreeTop.ScaleRateX, TreeTop.ScaleRateY);
                     ScrollViewerCanvas.ScrollToVerticalOffset(TreeTop.DistanceToPointY * TreeTop.ScaleRateY);
@@ -144,7 +138,7 @@ namespace Paint2
 
         public void ButtonChangeTool(object sender, RoutedEventArgs e)
         {
-            TreeTop.ToolNow = TreeTop.Transform[(sender as System.Windows.Controls.Button).Tag.ToString()];
+            TreeTop.ToolNow = TreeTop.TransformTools[(sender as System.Windows.Controls.Button).Tag.ToString()];
             if((sender as System.Windows.Controls.Button).Tag.ToString() == "RoundRect")
             {
                 textBoxRoundRectX.IsEnabled = true;
@@ -157,7 +151,7 @@ namespace Paint2
             }
             foreach (Figure figure in TreeTop.Figures)
             {
-                figure.UnSelected();
+                figure.UnSelect();
             }
             Invalidate();
             PropToolBarPanel.Children.Clear();
@@ -167,15 +161,12 @@ namespace Paint2
         {
             if (TreeTop.FirstPress== true){
                 TreeTop.ColorNow = TreeTop.TransformColor[(sender as System.Windows.Controls.Button).Tag.ToString()];
-                TreeTop.ColorStringNow = (sender as System.Windows.Controls.Button).Tag.ToString();
                 if((sender as System.Windows.Controls.Button).Background == null) { button_firstColor.Background = Brushes.Gray; }
                 else { button_firstColor.Background = (sender as System.Windows.Controls.Button).Background; }
-                
             }
             else
             {
                 TreeTop.BrushNow = TreeTop.TransformColor[(sender as System.Windows.Controls.Button).Tag.ToString()];
-                TreeTop.BrushStringNow = (sender as System.Windows.Controls.Button).Tag.ToString();
                 if ((sender as System.Windows.Controls.Button).Background == null) { button_secondColor.Background = Brushes.Gray; }
                 else { button_secondColor.Background = (sender as System.Windows.Controls.Button).Background; }
             }
@@ -219,8 +210,8 @@ namespace Paint2
             TreeTop.FigureHost.Children.Clear();
             TreeTop.Figures.Clear();
             TreeTop.ConditionNumber = 0;
-            TreeTop.ConditionsCanvas.Clear();
-            TreeTop.AddCondition();
+            TreeTop.StatesCanvas.Clear();
+            TreeTop.AddState();
             gotoPastCondition.IsEnabled = false;
             gotoSecondCondition.IsEnabled = false;
         }
@@ -257,12 +248,12 @@ namespace Paint2
             }
         }
 
-        private void textBoxRoundRectX_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBoxRoundRectX_TextChanged(object sender, TextChangedEventArgs e)
         {
             TreeTop.RoundXNow = Convert.ToDouble(textBoxRoundRectX.Text);
         }
 
-        private void textBoxRoundRectY_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBoxRoundRectY_TextChanged(object sender, TextChangedEventArgs e)
         {
             TreeTop.RoundYNow = Convert.ToDouble(textBoxRoundRectY.Text);
         }
@@ -298,11 +289,13 @@ namespace Paint2
                 DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Сохранить текущее изображение?", "", MessageBoxButtons.YesNo);
                 if(dialogResult == System.Windows.Forms.DialogResult.Yes)
                 {
-                    SaveFileDialog sfd = new SaveFileDialog();
-                    sfd.Title = "Сохранить как";
-                    sfd.OverwritePrompt = true;
-                    sfd.CheckPathExists = true;
-                    sfd.Filter = "Files(*.bin)|*.bin";
+                    SaveFileDialog sfd = new SaveFileDialog
+                    {
+                        Title = "Сохранить как",
+                        OverwritePrompt = true,
+                        CheckPathExists = true,
+                        Filter = "Files(*.bin)|*.bin"
+                    };
                     sfd.ShowDialog();
                     if (sfd.FileName != "")
                     {
@@ -314,9 +307,11 @@ namespace Paint2
                 }
             }
             TreeTop.Figures.Clear();
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Files(*.bin)|*.bin";
-            ofd.Title = "Открыть";
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                Filter = "Files(*.bin)|*.bin",
+                Title = "Открыть"
+            };
             ofd.ShowDialog();
             if (ofd.FileName != "")
             {
@@ -326,16 +321,48 @@ namespace Paint2
                 file.Close();
                 Invalidate();
             }
-            TreeTop.ConditionsCanvas.Clear();
+            TreeTop.StatesCanvas.Clear();
             TreeTop.ConditionNumber = 0;
-            TreeTop.AddCondition();
+            TreeTop.AddState();
             gotoPastCondition.IsEnabled = false;
             gotoSecondCondition.IsEnabled = false;
         }
 
-        private void gotoPastCondition_Click(object sender, RoutedEventArgs e)
+        private void ExportButton_Click(object sender, RoutedEventArgs e)
         {
-            TreeTop.gotoPastCondition();
+            if (TreeTop.Figures.Count != 0)
+            {
+                SaveFileDialog sfd = new SaveFileDialog
+                {
+                    Title = "Сохранить как",
+                    OverwritePrompt = true,
+                    CheckPathExists = true,
+                    Filter = "Files(*.png)|*.png"
+                };
+                sfd.ShowDialog();
+                if (sfd.FileName != "")
+                {
+                    MyCanvas.Measure(new Size((int)MyCanvas.Width, (int)MyCanvas.Height));
+                    MyCanvas.Arrange(new Rect(new Size((int)MyCanvas.Width, (int)MyCanvas.Height)));
+                    var rtb = new RenderTargetBitmap((int)MyCanvas.Width, (int)MyCanvas.Height, 96d, 96d, PixelFormats.Pbgra32);
+                    rtb.Render(MyCanvas);
+                    PngBitmapEncoder png = new PngBitmapEncoder();
+                    png.Frames.Add(BitmapFrame.Create(rtb));
+                    FileStream file = (FileStream)sfd.OpenFile();
+                    png.Save(file);
+                    file.Close();
+                }
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Нарисуйте что-нибудь...");
+            }
+
+        }
+
+        private void GotoPastCondition_Click(object sender, RoutedEventArgs e)
+        {
+            TreeTop.GotoPastState();
             if(TreeTop.ConditionNumber == 1)
             {
                 gotoPastCondition.IsEnabled = false;
@@ -344,10 +371,10 @@ namespace Paint2
             Invalidate();
         }
 
-        private void gotoSecondCondition_Click(object sender, RoutedEventArgs e)
+        private void GotoSecondCondition_Click(object sender, RoutedEventArgs e)
         {
-            TreeTop.gotoSecondCondition();
-            if(TreeTop.ConditionNumber == TreeTop.ConditionsCanvas.Count)
+            TreeTop.GotoSecondState();
+            if(TreeTop.ConditionNumber == TreeTop.StatesCanvas.Count)
             { 
                 gotoSecondCondition.IsEnabled = false;
             }
@@ -357,25 +384,25 @@ namespace Paint2
 
         //Change property figure function
 
-        public void changeRoundX (object sender, RoutedPropertyChangedEventArgs<double> e)
+        public void ChangeRoundX (object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             foreach (Figure figure in TreeTop.Figures)
             {
-                if (figure.Select == true)
+                if (figure.Selected == true)
                 {
-                    figure.ChangeRoundX(e.NewValue);
+                    (figure as RoundRect).ChangeRoundX(e.NewValue);
                 }
             }
             Invalidate();
         }
 
-        public void changeRoundY(object sender, RoutedPropertyChangedEventArgs<double> e)
+        public void ChangeRoundY(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             foreach (Figure figure in TreeTop.Figures)
             {
-                if (figure.Select == true)
+                if (figure.Selected == true)
                 {
-                    figure.ChangeRoundY(e.NewValue);
+                    (figure as RoundRect).ChangeRoundY(e.NewValue);
                 }
             }
             Invalidate();
@@ -385,12 +412,12 @@ namespace Paint2
         {
             foreach(Figure figure in TreeTop.Figures)
             {
-                if (figure.Select == true)
+                if (figure.Selected == true)
                 {
-                    figure.ChangePen(TreeTop.TransformColor[(sender as System.Windows.Controls.Button).Tag.ToString()], (sender as System.Windows.Controls.Button).Tag.ToString());
+                    figure.ChangePen(TreeTop.TransformColor[(sender as System.Windows.Controls.Button).Tag.ToString()]);
                 }
             }
-            TreeTop.AddCondition();
+            TreeTop.AddState();
             gotoPastCondition.IsEnabled = true;
             gotoSecondCondition.IsEnabled = false;
             Invalidate();
@@ -400,12 +427,12 @@ namespace Paint2
         {
             foreach (Figure figure in TreeTop.Figures)
             {
-                if (figure.Select == true)
+                if (figure.Selected == true)
                 {
-                    figure.ChangePen(TreeTop.TransformColor[(sender as System.Windows.Controls.Button).Tag.ToString()], (sender as System.Windows.Controls.Button).Tag.ToString(), new bool());
+                    figure.ChangePen(TreeTop.TransformColor[(sender as System.Windows.Controls.Button).Tag.ToString()], new bool());
                 }
             }
-            TreeTop.AddCondition();
+            TreeTop.AddState();
             gotoPastCondition.IsEnabled = true;
             gotoSecondCondition.IsEnabled = false;
             Invalidate();
@@ -415,12 +442,12 @@ namespace Paint2
         {
             foreach (Figure figure in TreeTop.Figures)
             {
-                if (figure.Select == true)
+                if (figure.Selected == true)
                 {
                     figure.ChangePen(TreeTop.TransformDashProp[(sender as System.Windows.Controls.Button).Content.ToString()], (sender as System.Windows.Controls.Button).Content.ToString());
                 }
             }
-            TreeTop.AddCondition();
+            TreeTop.AddState();
             gotoPastCondition.IsEnabled = true;
             gotoSecondCondition.IsEnabled = false;
             Invalidate();
@@ -430,13 +457,13 @@ namespace Paint2
         {
             foreach (Figure figure in TreeTop.Figures.ToArray())
             {
-                if(figure.Select == true)
+                if(figure.Selected == true)
                 {
                     TreeTop.Figures.Remove(figure);
                 }
             }
             PropToolBarPanel.Children.Clear();
-            TreeTop.AddCondition();
+            TreeTop.AddState();
             gotoPastCondition.IsEnabled = true;
             gotoSecondCondition.IsEnabled = false;
             Invalidate();
@@ -446,7 +473,7 @@ namespace Paint2
         {
             foreach (Figure figure in TreeTop.Figures)
             {
-                if (figure.Select == true)
+                if (figure.Selected == true)
                 {
                     figure.ChangePen(e.NewValue);
                 }
@@ -461,10 +488,9 @@ namespace Paint2
 
         public void SldMouseUp(object sender, MouseButtonEventArgs e)
         {
-            TreeTop.AddCondition();
+            TreeTop.AddState();
             gotoPastCondition.IsEnabled = true;
             gotoSecondCondition.IsEnabled = false;
         }
-
     }
 }

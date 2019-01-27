@@ -20,77 +20,81 @@ namespace Paint2.Paint
 
         public static Tool ToolNow = new PenTool();
 
-        public static List<List<Figure>> ConditionsCanvas = new List<List<Figure>>();
+        public static List<List<Figure>> StatesCanvas = new List<List<Figure>>();
 
         public static int ConditionNumber = 0;
 
         public static Tool HandTool = new HandForFigureTool();
 
-        public static void AddCondition()
+        public static void AddState()
         {
             List<Figure> figuresNow = new List<Figure>();
+
             foreach(Figure figure in Figures)
             {
                 figuresNow.Add(figure.Clone());
             }
-            ConditionsCanvas.Add(figuresNow);
+
+            StatesCanvas.Add(figuresNow);
             ConditionNumber++;
-            if (ConditionNumber != ConditionsCanvas.Count)
+
+            if (ConditionNumber != StatesCanvas.Count)
             {
-                ConditionsCanvas.RemoveRange(ConditionNumber - 1, ConditionsCanvas.Count - ConditionNumber);
+                StatesCanvas.RemoveRange(ConditionNumber - 1, StatesCanvas.Count - ConditionNumber);
             }
+
             Figures.Clear();
+
             foreach(Figure figure in figuresNow)
             {
                 Figures.Add(figure.Clone());
             }
-            foreach(Figure figure in ConditionsCanvas[ConditionNumber - 1])
+
+            foreach(Figure figure in StatesCanvas[ConditionNumber - 1])
             {
-                figure.Select = false;
-                figure.SelectRect = null;
+                figure.Selected = false;
+                figure.SelectedRect = null;
             }
-            if (ConditionsCanvas.Count > 1)
+
+            if (StatesCanvas.Count > 1)
             {
-                foreach (Figure figure in ConditionsCanvas[ConditionNumber - 2])
+                foreach (Figure figure in StatesCanvas[ConditionNumber - 2])
                 {
-                    figure.Select = false;
-                    figure.SelectRect = null;
+                    figure.Selected = false;
+                    figure.SelectedRect = null;
                 }
             }
         }
 
-        public static void gotoPastCondition()
+        public static void GotoPastState()
         {
             if (ConditionNumber != 1)
             {
                 ConditionNumber--;
                 Figures.Clear();
-                foreach(Figure figure in ConditionsCanvas[ConditionNumber - 1])
+                foreach(Figure figure in StatesCanvas[ConditionNumber - 1])
                 {
                     Figures.Add(figure.Clone());
                 }
             }
         }
 
-        public static void gotoSecondCondition()
+        public static void GotoSecondState()
         {
-            if(ConditionNumber != ConditionsCanvas.Count)
+            if(ConditionNumber != StatesCanvas.Count)
             {
                 ConditionNumber++;
                 Figures.Clear();
-                foreach (Figure figure in ConditionsCanvas[ConditionNumber - 1])
+                foreach (Figure figure in StatesCanvas[ConditionNumber - 1])
                 {
                     Figures.Add(figure.Clone());
                 }
             }
         }
 
-        public static Brush BrushNow = null;
-        public static string BrushStringNow = "null";
+        public static Brush BrushNow = Brushes.Transparent;
         public static Brush tempBrush = null;
         public static Brush ColorNow = Brushes.Black;
-        public static string ColorStringNow = "Black";
-        public static string tempStringBrush = "";
         public static double ThicnessNow = 4;
         public static DashStyle DashNow = DashStyles.Solid;
         public static string DashStringhNow = "―――――";
@@ -109,8 +113,7 @@ namespace Paint2.Paint
         public static double CanvasWidth;
         public static double CanvasHeigth;
         
-        [field: NonSerialized]
-        public static readonly Dictionary<string, Tool> Transform = new Dictionary<string, Tool>()
+        public static readonly Dictionary<string, Tool> TransformTools = new Dictionary<string, Tool>()
         {
             { "Line", new LineTool() },
             { "Rectangle", new RectanglTool() },
@@ -120,10 +123,8 @@ namespace Paint2.Paint
             { "Hand", new HandTool() },
             { "ZoomRect", new ZoomTool() },
             { "Allotment", new AllotmentTool() },
-
         };
-
-        [field: NonSerialized]
+        
         public static readonly Dictionary<string, DashStyle> TransformDash = new Dictionary<string, DashStyle>()
         {
             { "0", DashStyles.Solid },
@@ -133,8 +134,7 @@ namespace Paint2.Paint
             { "4", DashStyles.Dot },
 
         };
-
-        [field: NonSerialized]
+        
         public static readonly Dictionary<string, DashStyle> TransformDashProp = new Dictionary<string, DashStyle>()
         {
             { "―――――", DashStyles.Solid },
@@ -145,7 +145,6 @@ namespace Paint2.Paint
 
         };
         
-        [field: NonSerialized]
         public static readonly Dictionary<string, Brush> TransformColor = new Dictionary<string, Brush>()
         {
             { "Black", Brushes.Black },
@@ -157,7 +156,7 @@ namespace Paint2.Paint
             { "Purple", Brushes.Purple },
             { "Coral", Brushes.Coral },
             { "White", Brushes.White },
-            { "null", null }
+            { "null", Brushes.Transparent }
         };
     }
 }

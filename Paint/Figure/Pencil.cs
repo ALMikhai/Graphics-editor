@@ -19,14 +19,12 @@ namespace Paint2.Paint
         {
             Coordinates = new List<Point> { point, point };
             Color = TreeTop.ColorNow;
-            ColorString = TreeTop.ColorStringNow;
             PenThikness = TreeTop.ThicnessNow;
             Dash = TreeTop.DashNow;
             DashString = TreeTop.DashStringhNow;
             Pen = new Pen(Color, PenThikness) { DashStyle = Dash };
-            Select = false;
-            SelectRect = null;
-            Type = "Pencil";
+            Selected = false;
+            SelectedRect = null;
         }
 
         public override void Draw(DrawingContext drawingContext)
@@ -40,9 +38,9 @@ namespace Paint2.Paint
             Coordinates.Add(point);
         }
 
-        public override void Selected()
+        public override void Select()
         {
-            if (Select == false)
+            if (Selected == false)
             {
                 Point pForRect3 = Coordinates[0];
                 Point pForRect4 = new Point(0, 0);
@@ -68,30 +66,29 @@ namespace Paint2.Paint
                         pForRect4.Y = point.Y;
                     }
                 }
-                SelectRect = new ZoomRect(new Point(pForRect3.X - 7, pForRect3.Y - 7), new Point(pForRect4.X + 7, pForRect4.Y + 7));
+                SelectedRect = new ZoomRect(new Point(pForRect3.X - 7, pForRect3.Y - 7), new Point(pForRect4.X + 7, pForRect4.Y + 7));
                 var drawingVisual = new DrawingVisual();
                 var drawingContext = drawingVisual.RenderOpen();
-                SelectRect.Draw(drawingContext);
+                SelectedRect.Draw(drawingContext);
                 drawingContext.Close();
                 Paint.TreeTop.FigureHost.Children.Add(drawingVisual);
-                Select = true;
+                Selected = true;
             }
         }
 
-        public override void UnSelected()
+        public override void UnSelect()
         {
-            if (Select == true)
+            if (Selected == true)
             {
-                Select = false;
-                SelectRect = null;
+                Selected = false;
+                SelectedRect = null;
             }
         }
 
-        public override void ChangePen(Brush color, string str)
+        public override void ChangePen(Brush color)
         {
             Pen = new Pen(color, PenThikness) { DashStyle = Dash };
             Color = color;
-            ColorString = str;
         }
 
         public override void ChangePen(DashStyle dash, string str)
@@ -111,19 +108,16 @@ namespace Paint2.Paint
         {
             info.AddValue("Coordinates", Coordinates);
             info.AddValue("PenThikness", PenThikness);
-            info.AddValue("Color", ColorString);
+            info.AddValue("Color", Color.ToString());
             info.AddValue("Dash", DashString);
-            info.AddValue("Type", Type);
         }
 
         public Pencil(SerializationInfo info, StreamingContext context)
         {
             Coordinates = (List<Point>)info.GetValue("Coordinates", typeof(List<Point>));
             PenThikness = (double)info.GetValue("PenThikness", typeof(double));
-            ColorString = (string)info.GetValue("Color", typeof(string));
             DashString = (string)info.GetValue("Dash", typeof(string));
-            Type = (string)info.GetValue("Type", typeof(string));
-            Color = TreeTop.TransformColor[ColorString];
+            Color = (SolidColorBrush)new BrushConverter().ConvertFromString((string)info.GetValue("Color", typeof(string)));
             Dash = TreeTop.TransformDashProp[DashString];
             Pen = new Pen(Color, PenThikness) { DashStyle = Dash };
         }
@@ -132,20 +126,14 @@ namespace Paint2.Paint
         {
             return new Pencil
             {
-                BrushColor = this.BrushColor,
-                BrushColorString = this.BrushColorString,
                 Color = this.Color,
-                ColorString = this.ColorString,
                 Coordinates = new List<Point>(Coordinates),
                 Dash = this.Dash,
                 DashString = this.DashString,
                 Pen = this.Pen,
                 PenThikness = this.PenThikness,
-                RoundX = this.RoundX,
-                RoundY = this.RoundY,
-                Select = this.Select,
-                SelectRect = this.SelectRect,
-                Type = this.Type
+                Selected = this.Selected,
+                SelectedRect = this.SelectedRect,
             };
         }
     }

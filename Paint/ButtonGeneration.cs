@@ -20,7 +20,7 @@ namespace Paint2.Paint
     {
         public static void Generation()
         {
-            foreach (KeyValuePair<string, Tool> keyValue in TreeTop.Transform)
+            foreach (KeyValuePair<string, Tool> keyValue in TreeTop.TransformTools)
             {
                 string uri = "C:/Users/90-STICK/Documents/Visual Studio 2015/Projects/Paint2/Paint2/bin/icons/" + keyValue.Key.ToString() + ".png";
                 ImageBrush image = new ImageBrush();
@@ -29,25 +29,29 @@ namespace Paint2.Paint
                 bitmapImage.UriSource = new Uri(uri);
                 bitmapImage.EndInit();
                 image.ImageSource = bitmapImage;
-                Button button = new Button();
-                button.Tag = keyValue.Key.ToString();
-                button.Width = 30;
-                button.Height = 30;
-                button.Margin = new Thickness(4);
-                button.HorizontalAlignment = HorizontalAlignment.Left;
+                Button button = new Button
+                {
+                    Tag = keyValue.Key.ToString(),
+                    Width = 30,
+                    Height = 30,
+                    Margin = new Thickness(4),
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Background = image
+                };
                 button.Click += new RoutedEventHandler(Instance.ButtonChangeTool);
-                button.Background = image;
                 Instance.toolbarPanel.Children.Add(button);
             }
 
             foreach (KeyValuePair<String, Brush> color in TreeTop.TransformColor)
             {
-                Button button = new Button();
-                button.Tag = color.Key.ToString();
-                button.Background = color.Value;
-                button.Height = 24;
-                button.Width = 24;
-                button.Margin = new Thickness(2.5);
+                Button button = new Button
+                {
+                    Tag = color.Key.ToString(),
+                    Background = color.Value,
+                    Height = 24,
+                    Width = 24,
+                    Margin = new Thickness(2.5)
+                };
                 button.Click += new RoutedEventHandler(Instance.ButtonChangeColor);
                 Instance.colorbarPanel.Children.Add(button);
             }
@@ -59,14 +63,16 @@ namespace Paint2.Paint
             bitmapImage_Clean.UriSource = new Uri(uri_Clean);
             bitmapImage_Clean.EndInit();
             image_Clean.ImageSource = bitmapImage_Clean;
-            Button button_Clean = new Button();
-            button_Clean.Name = "Clean";
-            button_Clean.Width = 30;
-            button_Clean.Height = 30;
-            button_Clean.Margin = new Thickness(4);
-            button_Clean.HorizontalAlignment = HorizontalAlignment.Left;
+            Button button_Clean = new Button
+            {
+                Name = "Clean",
+                Width = 30,
+                Height = 30,
+                Margin = new Thickness(4),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Background = image_Clean
+            };
             button_Clean.Click += new RoutedEventHandler(Instance.CleanMyCanvas);
-            button_Clean.Background = image_Clean;
             Instance.toolbarPanel.Children.Add(button_Clean);
 
             string uri_MinusZoom = "C:/Users/90-STICK/Documents/Visual Studio 2015/Projects/Paint2/Paint2/bin/icons/MinusZoom.png";
@@ -76,35 +82,43 @@ namespace Paint2.Paint
             bitmapImage_MinusZoom.UriSource = new Uri(uri_MinusZoom);
             bitmapImage_MinusZoom.EndInit();
             image_MinusZoom.ImageSource = bitmapImage_MinusZoom;
-            Button button_MinusZoom = new Button();
-            button_MinusZoom.Name = "MinusZoom";
-            button_MinusZoom.Width = 30;
-            button_MinusZoom.Height = 30;
-            button_MinusZoom.Margin = new Thickness(4);
-            button_MinusZoom.HorizontalAlignment = HorizontalAlignment.Left;
+            Button button_MinusZoom = new Button
+            {
+                Name = "MinusZoom",
+                Width = 30,
+                Height = 30,
+                Margin = new Thickness(4),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Background = image_MinusZoom
+            };
             button_MinusZoom.Click += new RoutedEventHandler(Instance.MinusZoomMyCanvas);
-            button_MinusZoom.Background = image_MinusZoom;
             Instance.toolbarPanel.Children.Add(button_MinusZoom);
         }
 
         public static void PropertyButtonGeneration()
         {
-            Label Changelinecolor = new Label();
-            Changelinecolor.Content = "Change line color";
-            Changelinecolor.HorizontalAlignment = HorizontalAlignment.Center;
+            Label Changelinecolor = new Label
+            {
+                Content = "Change line color",
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
             Instance.PropToolBarPanel.Children.Add(Changelinecolor);
-            ToolBar prop1 = new ToolBar();
-            prop1.Name = "PropertiesToolBar1";
-            prop1.Margin = new Thickness(2);
-            
+            ToolBar prop1 = new ToolBar
+            {
+                Name = "PropertiesToolBar1",
+                Margin = new Thickness(2)
+            };
+
             foreach (KeyValuePair<String, Brush> color in TreeTop.TransformColor)
             {
-                Button button = new Button();
-                button.Tag = color.Key.ToString();
-                button.Background = color.Value;
-                button.Height = 18;
-                button.Width = 18;
-                button.Margin = new Thickness(2.5);
+                Button button = new Button
+                {
+                    Tag = color.Key.ToString(),
+                    Background = color.Value,
+                    Height = 18,
+                    Width = 18,
+                    Margin = new Thickness(2.5)
+                };
                 button.Click += new RoutedEventHandler(Instance.ChangeStrokeColor);
                 prop1.Items.Add(button);
                 
@@ -116,30 +130,37 @@ namespace Paint2.Paint
 
             foreach(Figure figure in TreeTop.Figures)
             {
-                if(figure.Select == true & (figure.Type == "Line" || figure.Type == "Pencil"))
+                if(figure.Selected == true & (figure is Line || figure is Pencil))
                 {
                     HaveLineorPolyline = true;
+                    break;
                 }
             }
 
             if (HaveLineorPolyline == false)
             {
-                Label Changefillcolor = new Label();
-                Changefillcolor.Content = "Change fill color";
-                Changefillcolor.HorizontalAlignment = HorizontalAlignment.Center;
+                Label Changefillcolor = new Label
+                {
+                    Content = "Change fill color",
+                    HorizontalAlignment = HorizontalAlignment.Center
+                };
                 Instance.PropToolBarPanel.Children.Add(Changefillcolor);
-                ToolBar prop2 = new ToolBar();
-                prop2.Name = "PropertiesToolBar2";
-                prop2.Margin = new Thickness(2);
+                ToolBar prop2 = new ToolBar
+                {
+                    Name = "PropertiesToolBar2",
+                    Margin = new Thickness(2)
+                };
 
                 foreach (KeyValuePair<String, Brush> color in TreeTop.TransformColor)
                 {
-                    Button button = new Button();
-                    button.Tag = color.Key.ToString();
-                    button.Background = color.Value;
-                    button.Height = 18;
-                    button.Width = 18;
-                    button.Margin = new Thickness(2.5);
+                    Button button = new Button
+                    {
+                        Tag = color.Key.ToString(),
+                        Background = color.Value,
+                        Height = 18,
+                        Width = 18,
+                        Margin = new Thickness(2.5)
+                    };
                     button.Click += new RoutedEventHandler(Instance.ChangeBrushColor);
                     prop2.Items.Add(button);
                 }
@@ -149,114 +170,149 @@ namespace Paint2.Paint
 
             HaveLineorPolyline = false;
 
-            Label Changedash = new Label();
-            Changedash.Content = "Change dash";
-            Changedash.HorizontalAlignment = HorizontalAlignment.Center;
+            Label Changedash = new Label
+            {
+                Content = "Change dash",
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
             Instance.PropToolBarPanel.Children.Add(Changedash);
 
             foreach (KeyValuePair<String, DashStyle> dash in TreeTop.TransformDashProp)
             {
-                Button button = new Button();
-                button.Height = 23;
-                button.Width = 60;
-                button.Content = dash.Key.ToString();
-                button.Margin = new Thickness(2);
+                Button button = new Button
+                {
+                    Height = 23,
+                    Width = 60,
+                    Content = dash.Key.ToString(),
+                    Margin = new Thickness(2)
+                };
                 button.Click += new RoutedEventHandler(Instance.ChangeDash);
                 Instance.PropToolBarPanel.Children.Add(button);
             }
 
-            Label Removethefigures = new Label();
-            Removethefigures.Content = "Remove the figures";
-            Removethefigures.HorizontalAlignment = HorizontalAlignment.Center;
+            Label Removethefigures = new Label
+            {
+                Content = "Remove the figures",
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
             Instance.PropToolBarPanel.Children.Add(Removethefigures);
 
-            Button ClearSelectedFigure = new Button();
-            ClearSelectedFigure.Height = 23;
-            ClearSelectedFigure.Width = 60;
-            ClearSelectedFigure.Content = "Delet";
+            Button ClearSelectedFigure = new Button
+            {
+                Height = 23,
+                Width = 60,
+                Content = "Delet",
+                Margin = new Thickness(2)
+            };
             ClearSelectedFigure.Click += new RoutedEventHandler(Instance.ClearSelectedFigure);
-            ClearSelectedFigure.Margin = new Thickness(2);
             Instance.PropToolBarPanel.Children.Add(ClearSelectedFigure);
 
-            Label Movethefigures = new Label();
-            Movethefigures.Content = "Move the figures";
-            Movethefigures.HorizontalAlignment = HorizontalAlignment.Center;
+            Label Movethefigures = new Label
+            {
+                Content = "Move the figures",
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
             Instance.PropToolBarPanel.Children.Add(Movethefigures);
 
-            Button HandForSelectedFigure = new Button();
-            HandForSelectedFigure.Height = 23;
-            HandForSelectedFigure.Width = 60;
-            HandForSelectedFigure.Content = "Hand";
+            Button HandForSelectedFigure = new Button
+            {
+                Height = 23,
+                Width = 60,
+                Content = "Hand",
+                Margin = new Thickness(2)
+            };
             HandForSelectedFigure.Click += new RoutedEventHandler(Instance.HandForSelectedFigure);
-            HandForSelectedFigure.Margin = new Thickness(2);
             Instance.PropToolBarPanel.Children.Add(HandForSelectedFigure);
 
-            bool HaveOnlyEllipse = true;
+            bool HaveOnlyRoundRect = false;
             double RoundX = 0;
             double RoundY = 0;
             foreach (Figure figure in TreeTop.Figures)
             {
-                if(figure.Type == "RoundRect" & figure.Select == true)
+                if(figure is RoundRect & figure.Selected == true)
                 {
-                    RoundX = figure.RoundX;
-                    RoundY = figure.RoundY;
+                    RoundX = (figure as RoundRect).RoundX;
+                    RoundY = (figure as RoundRect).RoundY;
                     break;
                 }
             }
 
             foreach (Figure figure in TreeTop.Figures)
             {
-                if ((figure.Type != "RoundRect" & figure.Select) || ((figure.RoundX != RoundX || figure.RoundY != RoundY) & figure.Select == true))
+                if (figure.Selected)
                 {
-                    HaveOnlyEllipse = false;
-                    break;
+                    if (figure is RoundRect)
+                    {
+                        if (((figure as RoundRect).RoundX == RoundX & (figure as RoundRect).RoundY == RoundY) & figure.Selected == true)
+                        {
+                            HaveOnlyRoundRect = true;
+                        }
+                    }
+                    else
+                    {
+                        HaveOnlyRoundRect = false;
+                        break;
+                    }
                 }
             }
 
-            if (HaveOnlyEllipse)
+            if (HaveOnlyRoundRect)
             {
-                Label ChengeRoundX = new Label();
-                ChengeRoundX.Content = "Change RoundX";
-                ChengeRoundX.HorizontalAlignment = HorizontalAlignment.Center;
+                Label ChengeRoundX = new Label
+                {
+                    Content = "Change RoundX",
+                    HorizontalAlignment = HorizontalAlignment.Center
+                };
                 Instance.PropToolBarPanel.Children.Add(ChengeRoundX);
-                Slider sldRoundX = new Slider();
-                sldRoundX.Maximum = 40;
-                sldRoundX.Minimum = 5;
-                sldRoundX.Height = 26;
-                sldRoundX.Width = 79;
-                sldRoundX.Value = RoundX;
-                sldRoundX.ValueChanged += new RoutedPropertyChangedEventHandler<double>(Instance.changeRoundX);
+                Slider sldRoundX = new Slider
+                {
+                    Maximum = 40,
+                    Minimum = 5,
+                    Height = 26,
+                    Width = 79,
+                    Value = RoundX
+                };
+                sldRoundX.ValueChanged += new RoutedPropertyChangedEventHandler<double>(Instance.ChangeRoundX);
                 sldRoundX.PreviewMouseUp += new MouseButtonEventHandler(Instance.SldMouseUp);
                 Instance.PropToolBarPanel.Children.Add(sldRoundX);
-                Label ChengeRoundY = new Label();
-                ChengeRoundY.Content = "Change RoundY";
-                ChengeRoundY.HorizontalAlignment = HorizontalAlignment.Center;
+
+                Label ChengeRoundY = new Label
+                {
+                    Content = "Change RoundY",
+                    HorizontalAlignment = HorizontalAlignment.Center
+                };
                 Instance.PropToolBarPanel.Children.Add(ChengeRoundY);
-                Slider sldRoundY = new Slider();
-                sldRoundY.Maximum = 40;
-                sldRoundY.Minimum = 5;
-                sldRoundY.Height = 26;
-                sldRoundY.Width = 79;
-                sldRoundY.Value = RoundY;
-                sldRoundY.ValueChanged += new RoutedPropertyChangedEventHandler<double>(Instance.changeRoundY);
+                Slider sldRoundY = new Slider
+                {
+                    Maximum = 40,
+                    Minimum = 5,
+                    Height = 26,
+                    Width = 79,
+                    Value = RoundY
+                };
+                sldRoundY.ValueChanged += new RoutedPropertyChangedEventHandler<double>(Instance.ChangeRoundY);
                 sldRoundY.PreviewMouseUp += new MouseButtonEventHandler(Instance.SldMouseUp);
                 Instance.PropToolBarPanel.Children.Add(sldRoundY);
             }
-            HaveOnlyEllipse = true;
+            HaveOnlyRoundRect = false;
         }
 
         public static void RowThicknessButton(double i)
         {
-            Label ChangeRowThikness = new Label();
-            ChangeRowThikness.Content = "Change row thikness";
-            ChangeRowThikness.HorizontalAlignment = HorizontalAlignment.Center;
+            Label ChangeRowThikness = new Label
+            {
+                Content = "Change row thikness",
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
             Instance.PropToolBarPanel.Children.Add(ChangeRowThikness);
-            Slider sld = new Slider();
-            sld.Height = 26;
-            sld.Width = 79;
-            sld.Minimum = 1;
-            sld.Maximum = 20;
-            sld.Value = i;
+            Slider sld = new Slider
+            {
+                Height = 26,
+                Width = 79,
+                Minimum = 1,
+                Maximum = 20,
+                Value = i
+            };
             sld.ValueChanged += new RoutedPropertyChangedEventHandler<double>(Instance.RowThicnessChange);
             sld.PreviewMouseUp += new MouseButtonEventHandler (Instance.SldMouseUp);
             Instance.PropToolBarPanel.Children.Add(sld);

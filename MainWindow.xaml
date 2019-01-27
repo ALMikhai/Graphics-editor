@@ -26,8 +26,8 @@
                     <TextBlock Tag="Dash" TextAlignment="Center" Width="110">— ∙ ∙ — ∙ ∙ — ∙ ∙ — </TextBlock>
                     <TextBlock Tag="Dash" TextAlignment="Center" Width="110">∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙</TextBlock>
                 </ComboBox>
-                <TextBox x:Name="textBoxRoundRectX" HorizontalAlignment="Left" Height="23" Margin="147,37,0,0" TextWrapping="Wrap" Text="10" VerticalAlignment="Top" Width="57" IsEnabled="False" TextChanged="textBoxRoundRectX_TextChanged"/>
-                <TextBox x:Name="textBoxRoundRectY" HorizontalAlignment="Left" Height="23" Margin="234,37,0,0" TextWrapping="Wrap" Text="10" VerticalAlignment="Top" Width="57" IsEnabled="False" TextChanged="textBoxRoundRectY_TextChanged"/>
+                <TextBox x:Name="textBoxRoundRectX" HorizontalAlignment="Left" Height="23" Margin="147,37,0,0" TextWrapping="Wrap" Text="10" VerticalAlignment="Top" Width="57" IsEnabled="False" TextChanged="TextBoxRoundRectX_TextChanged"/>
+                <TextBox x:Name="textBoxRoundRectY" HorizontalAlignment="Left" Height="23" Margin="234,37,0,0" TextWrapping="Wrap" Text="10" VerticalAlignment="Top" Width="57" IsEnabled="False" TextChanged="TextBoxRoundRectY_TextChanged"/>
                 <TextBlock x:Name="textBlockRoundY" HorizontalAlignment="Left" Height="15" Margin="234,10,0,0" TextWrapping="Wrap" Text="RoundY" VerticalAlignment="Top" Width="57" TextAlignment="Center" IsEnabled="False"/>
                 <TextBlock x:Name="textBlockRoundX" HorizontalAlignment="Left" Height="15" Margin="147,10,0,0" TextWrapping="Wrap" Text="RoundX" VerticalAlignment="Top" Width="57" TextAlignment="Center" IsEnabled="False"/>
             </Grid>
@@ -42,18 +42,19 @@
                 <Slider x:Name="ThiknessSlider" HorizontalAlignment="Left" Margin="282,9,0,0" VerticalAlignment="Top" Height="26" Width="79" Grid.Row="1" Minimum="1" Value="4" ValueChanged="ThiknessSlider_ValueChanged" Maximum="20"/>
             </Grid>
             <ToolBarPanel Grid.Column="0"  Name="toolbarPanel" Orientation="Horizontal" Margin="0,30,0,0"/>
-            <Button x:Name="gotoPastCondition" HorizontalAlignment="Left" Height="19" Margin="187,6,0,0" VerticalAlignment="Top" Width="24" Click="gotoPastCondition_Click" IsEnabled="False">
+            <Button x:Name="gotoPastCondition" HorizontalAlignment="Left" Height="19" Margin="272,6,0,0" VerticalAlignment="Top" Width="24" Click="GotoPastCondition_Click" IsEnabled="False">
                 <StackPanel>
                     <Image Source="C:/Users/90-STICK/Documents/Visual Studio 2015/Projects/Paint2/Paint2/bin/icons/Left.png" Height="15" Width="21" RenderTransformOrigin="0.387,0.445"/>
                 </StackPanel>
             </Button>
-            <Button x:Name="gotoSecondCondition" HorizontalAlignment="Left" Height="19" Margin="216,6,0,0" VerticalAlignment="Top" Width="24" Click="gotoSecondCondition_Click" IsEnabled="False">
+            <Button x:Name="gotoSecondCondition" HorizontalAlignment="Left" Height="19" Margin="301,6,0,0" VerticalAlignment="Top" Width="24" Click="GotoSecondCondition_Click" IsEnabled="False">
                 <StackPanel>
                     <Image Source="C:/Users/90-STICK/Documents/Visual Studio 2015/Projects/Paint2/Paint2/bin/icons/Right.png" Height="15" Width="21" RenderTransformOrigin="0.544,0.517"/>
                 </StackPanel>
             </Button>
             <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Width="75" Click="SaveButton_Click"/>
             <Button x:Name="LoadButton" Content="Load" HorizontalAlignment="Left" Margin="90,5,0,0" VerticalAlignment="Top" Width="75" Click="LoadButton_Click"/>
+            <Button x:Name="ExportButton" Content="Export" HorizontalAlignment="Left" Margin="170,5,0,0" VerticalAlignment="Top" Width="75" Click="ExportButton_Click"/>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -62,11 +63,11 @@
             </Grid.ColumnDefinitions>
             <ScrollViewer Name="ScrollViewerCanvas" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" CanContentScroll="False" Margin="4,0,0,0">
                 <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left">
-                    <Canvas  x:Name="MyCanvas" Background="Bisque" MouseDown="MyCanvas_MouseDown" MouseUp="MyCanvas_MouseUp" MouseMove="MyCanvas_MouseMove" ClipToBounds="True" Height="493" VerticalAlignment="Top" HorizontalAlignment="Left" Width="759" Loaded="MyCanvas_Loaded" SizeChanged="MyCanvas_SizeChanged" MouseLeave="MyCanvas_MouseLeave">
+                    <Canvas  x:Name="MyCanvas" Background="Bisque" MouseDown="MyCanvas_MouseDown" MouseUp="MyCanvas_MouseUp" MouseMove="MyCanvas_MouseMove" ClipToBounds="True" Height="557" VerticalAlignment="Top" HorizontalAlignment="Left" Width="996" Loaded="MyCanvas_Loaded" SizeChanged="MyCanvas_SizeChanged" MouseLeave="MyCanvas_MouseLeave">
                         <Canvas.LayoutTransform>
                             <ScaleTransform x:Name="layout"/>
                         </Canvas.LayoutTransform>
-                    </Canvas>
+                    </Canvas> 
                 </StackPanel>
             </ScrollViewer>
             <ToolBarPanel Name="PropToolBarPanel" HorizontalAlignment="Left" Width="134"/>

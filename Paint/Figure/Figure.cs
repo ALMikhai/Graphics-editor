@@ -18,27 +18,18 @@ namespace Paint2
 
         public Brush BrushColor { get; set; }
 
-        public string ColorString { get; set; }
-
-        public string BrushColorString { get; set; }
-
         public Pen Pen { get; set; }
         
         public double PenThikness { get; set; }
         
-        public bool Select { get; set; }
-        
-        public string Type { get; set; }
+        public bool Selected { get; set; }
         
         public DashStyle Dash { get; set; }
 
         public string DashString { get; set; }
 
-        public Figure SelectRect { get; set; }
-
-        public double RoundX { get; set; }
-
-        public double RoundY { get; set; }
+        public Figure SelectedRect { get; set; }
+        
 
         public virtual Figure Clone()
         {
@@ -70,17 +61,17 @@ namespace Paint2
             Coordinates.Add(point);
         }
 
-        public virtual void UnSelected()
+        public virtual void UnSelect()
         {
 
         }
 
-        public virtual void Selected()
+        public virtual void Select()
         {
 
         }
 
-        public virtual void ChangePen(Brush color, string colorstring)
+        public virtual void ChangePen(Brush color)
         {
 
         }
@@ -95,17 +86,7 @@ namespace Paint2
 
         }
 
-        public virtual void ChangePen(Brush color, string brushstring, bool check)
-        {
-
-        }
-
-        public virtual void ChangeRoundX(double newRoundX)
-        {
-
-        }
-
-        public virtual void ChangeRoundY(double newRoundY)
+        public virtual void ChangePen(Brush color, bool check)
         {
 
         }

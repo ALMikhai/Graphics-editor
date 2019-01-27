@@ -29,7 +29,7 @@ namespace Paint2.Paint
             TreeTop.Figures.Clear();
             foreach(Figure figure in figureNow)
             {
-                if (figure.Select == true)
+                if (figure.Selected == true)
                 {
                     for (var i = 0; i < figure.Coordinates.Count; i++)
                     {
@@ -38,7 +38,7 @@ namespace Paint2.Paint
 
                     for (var i = 0; i < 2; i++)
                     {
-                        figure.SelectRect.Coordinates[i] = Point.Add(figure.SelectRect.Coordinates[i], Point.Subtract(LastPoint, StartPoint));
+                        figure.SelectedRect.Coordinates[i] = Point.Add(figure.SelectedRect.Coordinates[i], Point.Subtract(LastPoint, StartPoint));
                     }
                 }
             }
