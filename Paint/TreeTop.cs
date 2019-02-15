@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
+using System.Windows.Forms;
 
 namespace Paint2.Paint
 {
@@ -15,7 +16,9 @@ namespace Paint2.Paint
     public class TreeTop
     {
         public static List<Figure> Figures = new List<Figure>();
-        
+
+        public static List<Figure> FiguresBuffer = new List<Figure>();
+
         public static FigureHost FigureHost = new FigureHost();
 
         public static Tool ToolNow = new PenTool();
@@ -23,8 +26,6 @@ namespace Paint2.Paint
         public static List<List<Figure>> StatesCanvas = new List<List<Figure>>();
 
         public static int ConditionNumber = 0;
-
-        public static Tool HandTool = new HandForFigureTool();
 
         public static void AddState()
         {
@@ -158,5 +159,48 @@ namespace Paint2.Paint
             { "White", Brushes.White },
             { "null", Brushes.Transparent }
         };
+
+        public static void RemoveBufferFigures()
+        {
+            FiguresBuffer.Clear();
+            foreach (Figure figure in Figures)
+            {
+                if (figure.Selected == true)
+                {
+                    FiguresBuffer.Add(figure);
+                }
+            }
+        }
+
+        public static void SaveToBuffer(List<Figure> figures)
+        {
+            FileStream file = new FileStream(@"C:\Users\90-STICK\Documents\Visual Studio 2015\Projects\Paint2\Paint2\Saves\Buffer\buffer.bin", FileMode.OpenOrCreate);
+            BinaryFormatter bin = new BinaryFormatter();
+            bin.Serialize(file, figures);
+            file.Close();
+        }
+
+        public static void LoadFromBuffer()
+        {
+            FileStream file = new FileStream(@"C:\Users\90-STICK\Documents\Visual Studio 2015\Projects\Paint2\Paint2\Saves\Buffer\buffer.bin", FileMode.Open);
+            BinaryFormatter bin = new BinaryFormatter();
+            FiguresBuffer = (List<Figure>)bin.Deserialize(file);
+            file.Close();
+            foreach (Figure figure in FiguresBuffer)
+            {
+                for (var i = 0; i< figure.Coordinates.Count; i++)
+                {
+                    figure.Coordinates[i] = Point.Subtract(figure.Coordinates[i], new Vector(40, 40));
+                }
+            }
+            Figures.AddRange(FiguresBuffer);
+            SaveToBuffer(FiguresBuffer);
+        }
+
+        public static void ClearBuffer()
+        {
+            FiguresBuffer.Clear();
+            SaveToBuffer(FiguresBuffer);
+        }
     }
 }

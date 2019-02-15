@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Paint2"
         mc:Ignorable="d"
         Title="MainWindow" Height="661.667" Width="1145.999" 
-        MinWidth="711">
+        MinWidth="711" KeyDown="Window_KeyDown" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70px"></RowDefinition>

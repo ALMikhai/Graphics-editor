@@ -78,7 +78,7 @@ namespace Paint2
             if (ClikOnCanvas)
             {
                 TreeTop.ToolNow.MouseMove(e.GetPosition(MyCanvas));
-                if (TreeTop.ToolNow == TreeTop.TransformTools["Hand"])
+                if (TreeTop.ToolNow is HandTool)
                 {
                     ScrollViewerCanvas.ScrollToVerticalOffset(TreeTop.HandScrollY);
                     ScrollViewerCanvas.ScrollToHorizontalOffset(TreeTop.HandScrollX);
@@ -92,19 +92,19 @@ namespace Paint2
             {
                 TreeTop.ToolNow.MouseUp(e.GetPosition(MyCanvas));
 
-                if (TreeTop.ToolNow != TreeTop.TransformTools["Allotment"] & TreeTop.ToolNow != TreeTop.TransformTools["ZoomRect"] & TreeTop.ToolNow != TreeTop.TransformTools["Hand"])
+                if (!(TreeTop.ToolNow is AllotmentTool) & !(TreeTop.ToolNow is ZoomTool) & !(TreeTop.ToolNow is HandTool))
                 {
                     TreeTop.AddState();
                     gotoPastCondition.IsEnabled = true;
                     gotoSecondCondition.IsEnabled = false;
                 }
-                if (TreeTop.ToolNow == TreeTop.TransformTools["ZoomRect"])
+                if (TreeTop.ToolNow is ZoomTool)
                 {
                     MyCanvas.LayoutTransform = new ScaleTransform(TreeTop.ScaleRateX, TreeTop.ScaleRateY);
                     ScrollViewerCanvas.ScrollToVerticalOffset(TreeTop.DistanceToPointY * TreeTop.ScaleRateY);
                     ScrollViewerCanvas.ScrollToHorizontalOffset(TreeTop.DistanceToPointX * TreeTop.ScaleRateX);
                 }
-                if (TreeTop.ToolNow == TreeTop.HandTool)
+                if (TreeTop.ToolNow is HandForFigureTool)
                 {
                     TreeTop.ToolNow = TreeTop.TransformTools["Allotment"];
                 }
@@ -119,7 +119,7 @@ namespace Paint2
             {
                 TreeTop.ToolNow.MouseUp(e.GetPosition(MyCanvas));
 
-                if (TreeTop.ToolNow != TreeTop.TransformTools["Allotment"] & TreeTop.ToolNow != TreeTop.TransformTools["ZoomRect"] & TreeTop.ToolNow != TreeTop.TransformTools["Hand"] & TreeTop.ToolNow != TreeTop.HandTool)
+                if (!(TreeTop.ToolNow is AllotmentTool) & !(TreeTop.ToolNow is ZoomTool) & !(TreeTop.ToolNow is HandTool))
                 {
                     TreeTop.AddState();
                     gotoPastCondition.IsEnabled = true;
@@ -131,10 +131,16 @@ namespace Paint2
                     ScrollViewerCanvas.ScrollToVerticalOffset(TreeTop.DistanceToPointY * TreeTop.ScaleRateY);
                     ScrollViewerCanvas.ScrollToHorizontalOffset(TreeTop.DistanceToPointX * TreeTop.ScaleRateX);
                 }
+                if (TreeTop.ToolNow is HandForFigureTool)
+                {
+                    TreeTop.ToolNow = TreeTop.TransformTools["Allotment"];
+                }
                 ClikOnCanvas = false;
                 Invalidate();
             }
         }
+
+
 
         public void ButtonChangeTool(object sender, RoutedEventArgs e)
         {
@@ -382,6 +388,36 @@ namespace Paint2
             Invalidate();
         }
 
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.C & Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                TreeTop.RemoveBufferFigures();
+                TreeTop.SaveToBuffer(TreeTop.FiguresBuffer);
+            }
+
+            if(e.Key == Key.V & Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                TreeTop.LoadFromBuffer();
+                Invalidate();
+            }
+
+            if (e.Key == Key.Z & Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                GotoPastCondition_Click(sender, e);
+            }
+
+            if (e.Key == Key.Y & Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                GotoSecondCondition_Click(sender, e);
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            TreeTop.ClearBuffer();
+        }
+
         //Change property figure function
 
         public void ChangeRoundX (object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -483,7 +519,7 @@ namespace Paint2
 
         public void HandForSelectedFigure(object sender, RoutedEventArgs e)
         {
-            TreeTop.ToolNow = TreeTop.HandTool;
+            TreeTop.ToolNow = new HandForFigureTool();
         }
 
         public void SldMouseUp(object sender, MouseButtonEventArgs e)
